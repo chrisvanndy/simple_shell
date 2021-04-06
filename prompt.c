@@ -11,5 +11,5 @@ void print_prompt1(void)
  */
 void print_prompt2(void)
 {
-	write(2, "< ", 2);
+	write(2, "> ", 2);
 }

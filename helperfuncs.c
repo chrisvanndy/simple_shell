@@ -47,8 +47,8 @@ char **tokenArray(char *cmd)
 		i++;
 	}
 	toks[i] = token;
-	free(cmd);
-	return (toks);
+/*	free(cmd);
+*/	return (toks);
 }
 /** 
  * free_toks - free vertical index of toks
@@ -67,8 +67,8 @@ void free_toks(char **toks)
 		free(toks[i]);
 		i++;
 	}
-	free(toks[i]);
-	free(toks);
+/*	free(toks[i]);
+*/	free(toks);
 }
 /** 
  * executecmd - execute path for tokens
@@ -91,6 +91,6 @@ int executecmd(char  **tokens)
 	}
 	else
 		wait(NULL);
-	free_toks(tokens);
-	return (signal);
+/*	free_toks(tokens);
+*/	return (signal);
 }

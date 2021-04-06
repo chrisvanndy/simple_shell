@@ -29,19 +29,20 @@ int main(void)
 			continue;
 		}
 		cmdtoks = tokenArray(cmd); 
-		if (_strcmp(cmdtoks[0], "exit\0") == 0 && cmdtoks[1] == NULL)
+/*		if (cmdtoks == NULL) do stuff;
+*/ 		if (_strcmp(cmdtoks[0], "exit\0") == 0 && cmdtoks[1] == NULL)
 			break;
 		signal = executecmd(cmdtoks);
 		if (signal == 1)
 			write(1, cmd, _strlen(cmd));
 		if (!mode)
 			break;
-/*		free_toks(cmdtoks);
+		free_toks(cmdtoks);
 		free(cmd);
-*/	}
-/*	free_toks(cmdtoks);
+	}
+	free_toks(cmdtoks);
 	free(cmd);
-*/	exit(EXIT_SUCCESS);
+	exit(EXIT_SUCCESS);
 }
 /**
  * read_cmd - reads commands

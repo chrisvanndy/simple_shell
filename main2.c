@@ -10,9 +10,10 @@
  * Return: 0 if success
  */
 int main(void)
-{:x
+{
 	char *cmd = NULL;
-	int mode;
+	int mode, signal = 0;
+	char **cmdtoks;
 
 	mode = isatty(STDIN_FILENO);
 	while (1)
@@ -27,20 +28,20 @@ int main(void)
 			free(cmd);
 			continue;
 		}
-		if (_strcmp(cmd, "exit\n") == 0)
-		{
-			free(cmd);
+		cmdtoks = tokenArray(cmd); 
+		if (_strcmp(cmdtoks[0], "exit\0") == 0 && cmdtoks[1] == NULL)
 			break;
-		}
-		write(1, cmd, _strlen(cmd));
+		signal = executecmd(cmdtoks);
+		if (signal == 1)
+			write(1, cmd, _strlen(cmd));
 		if (!mode)
-		{
-			free(cmd);
 			break;
-		}
+/*		free_toks(cmdtoks);
 		free(cmd);
-	}
-	exit(EXIT_SUCCESS);
+*/	}
+/*	free_toks(cmdtoks);
+	free(cmd);
+*/	exit(EXIT_SUCCESS);
 }
 /**
  * read_cmd - reads commands
@@ -81,7 +82,7 @@ char *read_cmd(void)
 			if (buflen == 1 || buf[buflen - 2] != '\\')
 			{	
 				free(buf);
-				return ptr;
+				return (ptr);
 			}
 			ptr[ptrlen + buflen - 2] = '\0';
 			buflen -= 2;

@@ -18,6 +18,24 @@ int _strcmp(char *s1, char *s2)
 	return (0);
 }
 /**
+ * _strncmp - compares n bytes of 2 strings
+ * @s1: string 1
+ * @s2: string 2
+ * @n: number of bytes to compare
+ * Return: 0 if match, or difference between strings
+ */
+int _strncmp(char *s1, char *s2, int n)
+{
+	int i = 0;
+
+	for (; (s1[i] || s2[i]) && n > 0; i++, n--)
+	{
+		if (s1[i] != s2[i])
+			return (s1[i] - s2[i]);
+	}
+	return (0);
+}
+/**
  * _strlen - finds length of a string
  * @s: the string
  * Return: count of characters

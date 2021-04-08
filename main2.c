@@ -28,11 +28,11 @@ int main(void)
 			free(cmd);
 			continue;
 		}
-		cmdtoks = tokenArray(cmd); 
+		cmdtoks = tokenArray(cmd);
 /*		if (cmdtoks == NULL) do stuff;
 */ 		if (_strcmp(cmdtoks[0], "exit\0") == 0 && cmdtoks[1] == NULL)
 			break;
-		signal = executecmd(cmdtoks);
+		executecmd(cmdtoks, cmd);
 		if (signal == 1)
 			write(1, cmd, _strlen(cmd));
 		if (!mode)

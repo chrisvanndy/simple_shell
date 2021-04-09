@@ -12,7 +12,7 @@
 int main(void)
 {
 	char *cmd = NULL;
-	int mode, signal = 0;
+	int mode;
 	char **cmdtoks;
 
 	mode = isatty(STDIN_FILENO);
@@ -21,20 +21,29 @@ int main(void)
 		if (mode)
 			print_prompt1();
 		cmd = read_cmd();
-		if (!cmd)
-			exit(EXIT_SUCCESS);
-		if (cmd[0] == '\0' || _strcmp(cmd, "\n") == 0)
+		cmdtoks = tokenArray(cmd);
+		if (cmdtoks[0] == NULL)
 		{
 			free(cmd);
+			errorhandler();
 			continue;
 		}
-		cmdtoks = tokenArray(cmd);
-/*		if (cmdtoks == NULL) do stuff;
-*/ 		if (_strcmp(cmdtoks[0], "exit\0") == 0 && cmdtoks[1] == NULL)
+		if (cmdtoks[0] == '\0' || _strcmp(cmdtoks[0], "\n\0") == 0)
+		{
+			free(cmd);
+			free_toks(cmdtoks);
+			continue;
+		}
+		if (_strcmp(cmdtoks[0], "exit\0") == 0 && cmdtoks[1] == NULL)
 			break;
+		if (_strcmp(cmdtoks[0], "cd\0") == 0)
+		{
+			dirchg(cmdtoks);
+			free(cmd);
+			free_toks(cmdtoks);
+			continue;
+		}
 		executecmd(cmdtoks, cmd);
-		if (signal == 1)
-			write(1, cmd, _strlen(cmd));
 		if (!mode)
 			break;
 		free_toks(cmdtoks);

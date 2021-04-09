@@ -40,5 +40,8 @@ char *_bstrcat(char *dest, char *src);
 
 /* MISC FUNCS */
 char *_realloc(char *ptr, unsigned int old_size, unsigned int new_size);
+void dirchg(char **cmdtoks);
+char *_memset(char *s, char b, unsigned int n);
+void errorhandler(void);
 
 #endif

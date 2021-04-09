@@ -4,13 +4,13 @@
  * @cmd: string passed via main
  * Return: int (count)
  */
-size_t countword(char *cmd)
+size_t countword(char *str, char delim)
 {
 	size_t i, count = 0;
 	
-	for (i = 0; cmd[i] != '\0'; i++)
+	for (i = 0; str[i] != '\0'; i++)
 	{
-		if (cmd[i] == ' ' || cmd[i + 1] == '\0')
+		if (str[i] == delim || str[i + 1] == '\0')
 			count++;
 	}
 	return (count);	
@@ -20,19 +20,22 @@ size_t countword(char *cmd)
  * @cmd: string passed from main to tokenize
  * Return: NULL if failed or 2darray if success
  */
-char **tokenArray(char *cmd)
+char **tokenArray(char *cmd, char *delim, int signal)
 {
 	char *token = NULL;
 	char **toks;
 	int i = 0;
 	int len = 0;
+	size_t wordcount = 0;
 
 	len = _strlen(cmd);
-	cmd[len - 1] = '\0';
-	toks = malloc(sizeof(char *) * (countword(cmd) + 1));
+	if (signal == 0)
+		cmd[len - 1] = '\0';
+	wordcount = countword(cmd, delim[0]);
+	toks = malloc(sizeof(char *) * (wordcount + 1));
 	if (toks == NULL)
 		return (NULL);
-	token = strtok(cmd, " ");
+	token = strtok(cmd, delim);
 	while (token != NULL)
 	{
 		toks[i] = _strdup(token);
@@ -41,7 +44,7 @@ char **tokenArray(char *cmd)
 			free_toks(toks);
 			return (NULL);
 		}
-		token = strtok(NULL, " ");
+		token = strtok(NULL, delim);
 		i++;
 	}
 	toks[i] = token;

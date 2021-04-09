@@ -51,3 +51,39 @@ char *_strcat(char *dest, char *src)
 	}
 	return (dest);
 }
+/**
+ * funkycat - used to create path strings
+ * @dest: destination string
+ * @src: source string
+ * @extra: extra char(s) for middle of string
+ * Return: altered string
+ */
+char *funkycat(char *dest, char *middle, char *src)
+{
+	if (dest && src && middle)
+	{
+		_strcat(dest, middle);
+		_strcat(dest, src);
+	}
+	else
+		return (NULL);
+	return (dest);
+}
+/**
+ * _strncpy - copies n byes of src to dest
+ * @dest: destination string
+ * @src: source string
+ * @n: number of bytes
+ * Return: copy of string
+ */
+char *_strncpy(char *dest, char *src, int n)
+{
+	int i = 0;
+
+	for (i = 0; src[i] && i < n; i++)
+	{
+		dest[i] = src[i];
+	}
+	dest[i] = '\0';
+	return (dest);
+}

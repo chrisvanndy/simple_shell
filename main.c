@@ -1,43 +1,53 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <errno.h>
-#include <string.h>
 #include "shell.h"
 /**
  * main - accepts and executes commands
- * @argc: # of command line args
- * @argv: list of command line args stored as strings
+ * @ac: # of command line args
+ * @av: list of command line args stored as strings
  * Return: 0 if success
  */
-int main(int argc, char *argv[])
+int main(int ac, char **av)
 {
-	char *cmd;
+	char *cmd = NULL, *path = NULL;
+	int mode, signal = 0;
+	char **cmdtoks;
 
-	(void)argc;
-	(void)argv;
+	(void)ac;
+	mode = isatty(STDIN_FILENO);
 	while (1)
 	{
-		print_prompt1();
-
+		if (mode)
+			print_prompt1();
 		cmd = read_cmd();
-
-		if (!cmd)	/* do we need this? */
-			exit(EXIT_SUCCESS);
-
-		if (cmd[0] == '\0' || _strcmp(cmd, "\n") == 0)
+		cmdtoks = tokenArray(cmd, " ", 0);
+		if (cmdtoks[0] == NULL)
 		{
 			free(cmd);
+			errorhandler(av[0]);
 			continue;
 		}
-		if (_strcmp(cmd, "exit") == 0)
+		/* Make comparison here */
+		signal = compareStr(av, cmd, cmdtoks);
+		if (signal == 0)
+			continue;
+		if (signal == -1)
+			break;
+		/* find path */
+		path = find_path(cmdtoks);
+		if (!path)
 		{
 			free(cmd);
-			break;
+			free_toks(cmdtoks);
+			errorhandler(av[0]);
+			continue;
 		}
-		cmd[_strlen(cmd)] = '\n';
-		write(1, cmd, _strlen(cmd));
+		executecmd(av, cmdtoks, path, cmd);
+		if (!mode)
+			break;
+		free_toks(cmdtoks);
 		free(cmd);
 	}
+	free_toks(cmdtoks);
+	free(cmd);
 	exit(EXIT_SUCCESS);
 }
 /**
@@ -46,20 +56,19 @@ int main(int argc, char *argv[])
  */
 char *read_cmd(void)
 {
-	char buf[1024], *ptr = NULL;
-	char ptrlen = 0;
-	int readval;
+	char *buf = NULL, *ptr = NULL, *ptr2;
+	ssize_t ptrlen = 0, getlineval = 0, buflen = 0;
+	size_t bufsize = 1024;
 
-	while ((readval = read(0, buf, 1024)) > 0)
+	while (getlineval != -1)
 	{
-		int buflen = _strlen(buf);
-
+		getlineval = getline(&buf, &bufsize, stdin);
+		buflen = _strlen(buf);
 		if (!ptr)
 			ptr = malloc(buflen + 1);
 		else
 		{
-			char *ptr2 = _realloc(ptr, buflen + 1, ptrlen + buflen + 1);
-			
+			ptr2 = _realloc(ptr, ptrlen, ptrlen + buflen + 1);
 			if (ptr2)
 				ptr = ptr2;
 			else
@@ -70,19 +79,50 @@ char *read_cmd(void)
 		}
 		if (!ptr)
 		{
-			write(2, strerror(errno), _strlen(strerror(errno)));
+			perror("error: failed to alloc buffer: ");
+			free(buf);
 			return (NULL);
 		}
-		_strcpy (ptr + ptrlen, buf);
+		_strcpy(ptr + ptrlen, buf);
 		if (buf[buflen - 1] == '\n')
 		{
 			if (buflen == 1 || buf[buflen - 2] != '\\')
+			{
+				free(buf);
 				return (ptr);
+			}
 			ptr[ptrlen + buflen - 2] = '\0';
 			buflen -= 2;
-			print_prompt2();	
+			print_prompt2();
 		}
 		ptrlen += buflen;
 	}
+	free(buf);
 	return (ptr);
+}
+/**
+ * compareStr - compares string to unique cases
+ * @cmd: input string
+ * @toks: 2d array of tokens
+ * Return: 0 if continue, -1 if break, 1 if no match
+ */
+int compareStr(char **av, char *cmd, char **toks)
+{
+	if (toks[0] == '\0' || _strcmp(toks[0], "\n\0") == 0)
+	{
+		free(cmd);
+		free_toks(toks);
+		return (0);
+	}
+	if (_strcmp(toks[0], "cd\0") == 0)
+	{
+		dirchg(toks, av);
+		free(cmd);
+		free_toks(toks);
+		return (0);
+	}
+	if (_strcmp(toks[0], "exit\0") == 0 && toks[1] == NULL)
+		return (-1);
+
+	return (1);
 }

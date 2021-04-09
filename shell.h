@@ -1,6 +1,6 @@
 #ifndef SHELL_H
 #define SHELL_H
-#define EOF (-1)
+
 extern char **environ;
 
 /* INCLUDES */
@@ -22,12 +22,14 @@ extern char **environ;
 void print_prompt1(void);
 void print_prompt2(void);
 char *read_cmd(void);
-int executecmd(char **tokens, char *cmd);
+void executecmd(char **av, char **toks, char *path, char *cmd);
 
 /* TOKEN FUNCS */
-char **tokenArray(char *cmd);
+char **tokenArray(char *cmd, char *delim, int signal);
 void free_toks(char **toks);
-size_t countword(char *cmd);
+size_t countword(char *str, char delim);
+char *check_path(char *str);
+char *find_path(char **toks);
 
 /* STRING FUNCS */
 char *_strcpy(char *dest, char *src);
@@ -37,11 +39,14 @@ int _strncmp(char *s1, char *s2, int n);
 int _strlen(char *s);
 char *_strcat(char *dest, char *src);
 char *_bstrcat(char *dest, char *src);
+char *funkycat(char *dest, char *middle, char *src);
+int compareStr(char ** av, char *cmd, char **toks);
+char *_strncpy(char *dest, char *src, int n);
 
 /* MISC FUNCS */
 char *_realloc(char *ptr, unsigned int old_size, unsigned int new_size);
-void dirchg(char **cmdtoks);
+void dirchg(char **cmdtoks, char **av);
 char *_memset(char *s, char b, unsigned int n);
-void errorhandler(void);
+void errorhandler(char *av);
 
 #endif

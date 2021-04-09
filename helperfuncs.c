@@ -2,6 +2,7 @@
 /**
  * dirchg - handles "cd" built in via path
  * @cmdtoks: 2d array of tokenized input
+ * @av: argv
  * Return: void
  */
 void dirchg(char **cmdtoks, char **av)
@@ -47,6 +48,7 @@ char *_memset(char *s, char b, unsigned int n)
 }
 /**
  * errorhandler - handles error message text
+ * @av: argv
  * Return: void
  */
 void errorhandler(char *av)

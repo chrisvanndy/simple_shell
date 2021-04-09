@@ -1,23 +1,27 @@
 #include "shell.h"
 /**
  * countword - counts words from command line string
- * @cmd: string passed via main
+ * @str: string passed via main
+ * @delim: delimiter character
  * Return: int (count)
  */
 size_t countword(char *str, char delim)
 {
 	size_t i, count = 0;
-	
+
 	for (i = 0; str[i] != '\0'; i++)
 	{
 		if (str[i] == delim || str[i + 1] == '\0')
 			count++;
 	}
-	return (count);	
+	return (count);
 }
 /**
  * tokenArray - creates an array of tokens
  * @cmd: string passed from main to tokenize
+ * @delim: delimiter character
+ * @signal: used to identify when function is being called - determines
+ * when to append a null byte
  * Return: NULL if failed or 2darray if success
  */
 char **tokenArray(char *cmd, char *delim, int signal)
@@ -50,7 +54,7 @@ char **tokenArray(char *cmd, char *delim, int signal)
 	toks[i] = token;
 	return (toks);
 }
-/** 
+/**
  * free_toks - free vertical index of toks
  * @toks: array passed from tokenArray
  *

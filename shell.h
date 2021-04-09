@@ -15,8 +15,7 @@ extern char **environ;
 #include <fcntl.h>
 #include <dirent.h>
 #include <sys/wait.h>
-
-/* STRUCTS */
+#include <signal.h>
 
 /* PROMPT/CMD FUNCS */
 void print_prompt1(void);
@@ -33,6 +32,7 @@ char *find_path(char **toks);
 
 /* STRING FUNCS */
 char *_strcpy(char *dest, char *src);
+char *_strncpy(char *dest, char *src, int n);
 char *_strdup(char *str);
 int _strcmp(char *s1, char *s2);
 int _strncmp(char *s1, char *s2, int n);
@@ -40,13 +40,12 @@ int _strlen(char *s);
 char *_strcat(char *dest, char *src);
 char *_bstrcat(char *dest, char *src);
 char *funkycat(char *dest, char *middle, char *src);
-int compareStr(char ** av, char *cmd, char **toks);
-char *_strncpy(char *dest, char *src, int n);
 
 /* MISC FUNCS */
 char *_realloc(char *ptr, unsigned int old_size, unsigned int new_size);
 void dirchg(char **cmdtoks, char **av);
 char *_memset(char *s, char b, unsigned int n);
 void errorhandler(char *av);
+int compareStr(char **av, char *cmd, char **toks);
 
 #endif

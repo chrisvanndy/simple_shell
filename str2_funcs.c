@@ -54,8 +54,8 @@ char *_strcat(char *dest, char *src)
 /**
  * funkycat - used to create path strings
  * @dest: destination string
+ * @middle: extra char(s) for middle of string
  * @src: source string
- * @extra: extra char(s) for middle of string
  * Return: altered string
  */
 char *funkycat(char *dest, char *middle, char *src)

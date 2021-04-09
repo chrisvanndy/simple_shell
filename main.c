@@ -8,10 +8,11 @@
 int main(int ac, char **av)
 {
 	char *cmd = NULL, *path = NULL;
-	int mode, signal = 0;
+	int mode, comp = 0;
 	char **cmdtoks;
 
 	(void)ac;
+	signal(SIGINT, SIG_IGN);
 	mode = isatty(STDIN_FILENO);
 	while (1)
 	{
@@ -22,14 +23,14 @@ int main(int ac, char **av)
 		if (cmdtoks[0] == NULL)
 		{
 			free(cmd);
-			errorhandler(av[0]);
-			continue;
+/*			errorhandler(av[0]);
+*/			continue;
 		}
 		/* Make comparison here */
-		signal = compareStr(av, cmd, cmdtoks);
-		if (signal == 0)
+		comp = compareStr(av, cmd, cmdtoks);
+		if (comp == 0)
 			continue;
-		if (signal == -1)
+		if (comp == -1)
 			break;
 		/* find path */
 		path = find_path(cmdtoks);
@@ -63,6 +64,8 @@ char *read_cmd(void)
 	while (getlineval != -1)
 	{
 		getlineval = getline(&buf, &bufsize, stdin);
+		if (getlineval == -1)
+			free(buf), write(1, "\n", 1), exit(-1);
 		buflen = _strlen(buf);
 		if (!ptr)
 			ptr = malloc(buflen + 1);
@@ -102,6 +105,7 @@ char *read_cmd(void)
 }
 /**
  * compareStr - compares string to unique cases
+ * @av: argv
  * @cmd: input string
  * @toks: 2d array of tokens
  * Return: 0 if continue, -1 if break, 1 if no match

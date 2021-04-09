@@ -30,6 +30,8 @@ int _strncmp(char *s1, char *s2, int n)
 {
 	int i = 0;
 
+	if (!s1 || !s2 || n < 0)
+		return (1);
 	for (; (s1[i] || s2[i]) && n > 0; i++, n--)
 	{
 		if (s1[i] != s2[i])
@@ -80,6 +82,8 @@ char *_strcpy(char *dest, char *src)
 {
 	int i = 0;
 
+	if (!src)
+		return (NULL);
 	while (src && src[i])
 	{
 		dest[i] = src[i];

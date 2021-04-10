@@ -10,17 +10,19 @@
 void executecmd(char **av, char **toks, char *path, char *cmd)
 {
 	pid_t child;
+	char *temp = NULL;
 
+	temp = _strdup(path);
 	free(toks[0]);
-	toks[0] = _strdup(path);
-	free(path);
+	toks[0] = temp;
 	child = fork();
 	if (!child)
 	{
 		signal(SIGINT, SIG_DFL);
 		if (execve(toks[0], toks, environ) == -1)
 		{
-			errorhandler(av[0]);
+/*			errno = 
+*/			errorhandler(av[0], toks[0]);
 			free(cmd);
 			free_toks(toks);
 			exit(-1);

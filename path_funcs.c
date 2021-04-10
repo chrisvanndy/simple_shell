@@ -29,9 +29,8 @@ char *find_path(char **toks)
 		if (_strcmp(path[i], newstr) == 0)
 		{
 			free(newstr);
-			newstr = _strdup(toks[0]);
 			free_toks(path);
-			return (newstr);
+			return (toks[0]);
 		}
 		else
 		{
@@ -59,18 +58,20 @@ char *find_path(char **toks)
 	/* If valid command is found, return the path to the command */
 	if (signal == 1)
 	{
-		newstr = _strdup(path[i]);
+		len = _strlen(path[i]);
+		toks[0] = _realloc(toks[0], len2, len + 1);
+		_strcpy(toks[0], path[i]);
 		free_toks(path);
-		return (newstr);
+		return (toks[0]);
 	}
-	/* Otherwise, return NULL */
+	/* Otherwise, return user input */
 	else
 	{
 		free(newstr);
 		free_toks(path);
-		return (NULL);
+		return (toks[0]);
 	}
-	return (NULL);
+	return (toks[0]);
 }
 /**
  * check_path - checks if user has given a full path

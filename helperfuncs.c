@@ -17,7 +17,7 @@ void dirchg(char **cmdtoks, char **av)
 		cmdtoks[0] = _strcpy(cmdtoks[0], path);
 		if (chdir(cmdtoks[0]) == 0)
 			return;
-		errorhandler(av[0]);
+		errorhandler(av[0], cmdtoks[0]);
 	}
 	if (_strcmp(cmdtoks[1], "~\0") == 0 && cmdtoks[2] == NULL)
 	{
@@ -27,7 +27,7 @@ void dirchg(char **cmdtoks, char **av)
 	}
 	if (chdir(cmdtoks[1]) == 0)
 		return;
-	errorhandler(av[0]);
+	errorhandler(av[0], cmdtoks[0]);
 }
 /**
  * _memset - sets memory
@@ -51,9 +51,20 @@ char *_memset(char *s, char b, unsigned int n)
  * @av: argv
  * Return: void
  */
-void errorhandler(char *av)
+void errorhandler(char *av, char *input)
 {
-	perror(av);
+	char *newstr = NULL;
+	int len = _strlen(av);
+	int len2 = _strlen(input);
+
+	newstr = malloc(sizeof(char) * (len + len2 + 3));
+	_memset(newstr, '\0', (len + len2 + 3));
+	_strcpy(newstr, av);
+	newstr[len] = ':';
+	newstr[len + 1] = ' ';
+	_strcat(newstr, input);
+	perror(newstr);
+	free(newstr);
 }
 /**
  * _realloc - reallocates a memory block

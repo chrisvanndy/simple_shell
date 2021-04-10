@@ -45,7 +45,7 @@ char *funkycat(char *dest, char *middle, char *src);
 char *_realloc(char *ptr, unsigned int old_size, unsigned int new_size);
 void dirchg(char **cmdtoks, char **av);
 char *_memset(char *s, char b, unsigned int n);
-void errorhandler(char *av);
+void errorhandler(char *av, char *input);
 int compareStr(char **av, char *cmd, char **toks);
 
 #endif

@@ -34,14 +34,14 @@ int main(int ac, char **av)
 			break;
 		/* find path */
 		path = find_path(cmdtoks);
-		if (!path)
+/*		if (!path)
 		{
 			free(cmd);
 			free_toks(cmdtoks);
 			errorhandler(av[0]);
 			continue;
 		}
-		executecmd(av, cmdtoks, path, cmd);
+*/		executecmd(av, cmdtoks, path, cmd);
 		if (!mode)
 			break;
 		free_toks(cmdtoks);

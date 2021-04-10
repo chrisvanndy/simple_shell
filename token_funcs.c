@@ -32,6 +32,8 @@ char **tokenArray(char *cmd, char *delim, int signal)
 	int len = 0;
 	size_t wordcount = 0;
 
+	if (!cmd)
+		return (NULL);
 	len = _strlen(cmd);
 	if (signal == 0)
 		cmd[len - 1] = '\0';

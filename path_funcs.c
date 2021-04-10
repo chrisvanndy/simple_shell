@@ -18,6 +18,8 @@ char *find_path(char **toks)
 			break;
 	/* Create 2d array for paths */
 	newstr = _strdup(environ[i]);
+	if (!newstr)
+		return (toks[0]);
 /*	len = countword(newstr + 5, ':');
 */	path = tokenArray(newstr + 5, ":", 1);
 	free(newstr);
@@ -29,7 +31,7 @@ char *find_path(char **toks)
 		if (_strcmp(path[i], newstr) == 0)
 		{
 			free(newstr);
-			free_toks(path);
+			free_toks(path); 
 			return (toks[0]);
 		}
 		else

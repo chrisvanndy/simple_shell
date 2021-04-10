@@ -21,7 +21,7 @@ extern char **environ;
 void print_prompt1(void);
 void print_prompt2(void);
 char *read_cmd(void);
-void executecmd(char **av, char **toks, char *path, char *cmd);
+void executecmd(char **av, char **toks, char *path, char *cmd, int count);
 
 /* TOKEN FUNCS */
 char **tokenArray(char *cmd, char *delim, int signal);
@@ -43,9 +43,11 @@ char *funkycat(char *dest, char *middle, char *src);
 
 /* MISC FUNCS */
 char *_realloc(char *ptr, unsigned int old_size, unsigned int new_size);
-void dirchg(char **cmdtoks, char **av);
+void dirchg(char **cmdtoks, char **av, int count);
 char *_memset(char *s, char b, unsigned int n);
-void errorhandler(char *av, char *input);
-int compareStr(char **av, char *cmd, char **toks);
+void execError(char *av, char *input, int count);
+void errorhandler(char *av, char *input, int count);
+int compareStr(char **av, char *cmd, char **toks, int count);
+char *int_to_str(int n, char *str);
 
 #endif

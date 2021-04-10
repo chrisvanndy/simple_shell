@@ -8,7 +8,7 @@
 int main(int ac, char **av)
 {
 	char *cmd = NULL, *path = NULL;
-	int mode, comp = 0;
+	int mode, comp = 0, count = 0;
 	char **cmdtoks;
 
 	(void)ac;
@@ -16,18 +16,20 @@ int main(int ac, char **av)
 	mode = isatty(STDIN_FILENO);
 	while (1)
 	{
+		count++;
 		if (mode)
 			print_prompt1();
 		cmd = read_cmd();
+		if (!cmd)
+			exit(-1);
 		cmdtoks = tokenArray(cmd, " ", 0);
-		if (cmdtoks[0] == NULL)
+		if (cmdtoks == NULL)
 		{
 			free(cmd);
-/*			errorhandler(av[0]);
-*/			continue;
+			continue;
 		}
 		/* Make comparison here */
-		comp = compareStr(av, cmd, cmdtoks);
+		comp = compareStr(av, cmd, cmdtoks, count);
 		if (comp == 0)
 			continue;
 		if (comp == -1)
@@ -41,7 +43,7 @@ int main(int ac, char **av)
 			errorhandler(av[0]);
 			continue;
 		}
-*/		executecmd(av, cmdtoks, path, cmd);
+*/		executecmd(av, cmdtoks, path, cmd, count);
 		if (!mode)
 			break;
 		free_toks(cmdtoks);
@@ -110,7 +112,7 @@ char *read_cmd(void)
  * @toks: 2d array of tokens
  * Return: 0 if continue, -1 if break, 1 if no match
  */
-int compareStr(char **av, char *cmd, char **toks)
+int compareStr(char **av, char *cmd, char **toks, int count)
 {
 	if (toks[0] == '\0' || _strcmp(toks[0], "\n\0") == 0)
 	{
@@ -120,7 +122,7 @@ int compareStr(char **av, char *cmd, char **toks)
 	}
 	if (_strcmp(toks[0], "cd\0") == 0)
 	{
-		dirchg(toks, av);
+		dirchg(toks, av, count);
 		free(cmd);
 		free_toks(toks);
 		return (0);

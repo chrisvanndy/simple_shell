@@ -5,9 +5,10 @@
  * @toks: 2d array of args passed from main
  * @path: path to executable
  * @cmd: input str - freed upon error
+ * @count: keeps track of line #
  * Return: void
  */
-void executecmd(char **av, char **toks, char *path, char *cmd)
+void executecmd(char **av, char **toks, char *path, char *cmd, int count)
 {
 	pid_t child;
 	char *temp = NULL;
@@ -16,16 +17,17 @@ void executecmd(char **av, char **toks, char *path, char *cmd)
 	free(toks[0]);
 	toks[0] = temp;
 	child = fork();
-	if (!child)
+	if (child == -1)
+		errorhandler(av[0], toks[0], count);
+	if (child == 0)
 	{
 		signal(SIGINT, SIG_DFL);
 		if (execve(toks[0], toks, environ) == -1)
 		{
-/*			errno = 
-*/			errorhandler(av[0], toks[0]);
+			execError(av[0], toks[0], count);
 			free(cmd);
 			free_toks(toks);
-			exit(-1);
+			exit(0);
 		}
 	}
 	else

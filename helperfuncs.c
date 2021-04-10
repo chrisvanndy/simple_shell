@@ -3,9 +3,10 @@
  * dirchg - handles "cd" built in via path
  * @cmdtoks: 2d array of tokenized input
  * @av: argv
+ * @count: keeps count of line #
  * Return: void
  */
-void dirchg(char **cmdtoks, char **av)
+void dirchg(char **cmdtoks, char **av, int count)
 {
 	char *path = "/home/";
 	int len;
@@ -17,7 +18,7 @@ void dirchg(char **cmdtoks, char **av)
 		cmdtoks[0] = _strcpy(cmdtoks[0], path);
 		if (chdir(cmdtoks[0]) == 0)
 			return;
-		errorhandler(av[0], cmdtoks[0]);
+		errorhandler(av[0], cmdtoks[0], count);
 	}
 	if (_strcmp(cmdtoks[1], "~\0") == 0 && cmdtoks[2] == NULL)
 	{
@@ -27,7 +28,7 @@ void dirchg(char **cmdtoks, char **av)
 	}
 	if (chdir(cmdtoks[1]) == 0)
 		return;
-	errorhandler(av[0], cmdtoks[0]);
+	errorhandler(av[0], cmdtoks[0], count);
 }
 /**
  * _memset - sets memory
@@ -45,26 +46,6 @@ char *_memset(char *s, char b, unsigned int n)
 		s[i] = b;
 	}
 	return (s);
-}
-/**
- * errorhandler - handles error message text
- * @av: argv
- * Return: void
- */
-void errorhandler(char *av, char *input)
-{
-	char *newstr = NULL;
-	int len = _strlen(av);
-	int len2 = _strlen(input);
-
-	newstr = malloc(sizeof(char) * (len + len2 + 3));
-	_memset(newstr, '\0', (len + len2 + 3));
-	_strcpy(newstr, av);
-	newstr[len] = ':';
-	newstr[len + 1] = ' ';
-	_strcat(newstr, input);
-	perror(newstr);
-	free(newstr);
 }
 /**
  * _realloc - reallocates a memory block

@@ -1,0 +1,43 @@
+.TH man 1 "April 12, 2021" "Holberton School Simple Shell Project"
+.SH NAME
+	hsh - Holberton Simple Shell
+.PP
+.SH SYNOPSIS
+.B ./hsh
+.PP
+.SH COPYRIGHT
+	This simple shell project is public domain, no copyright protection
+.PP
+.SH DESCRIPTION
+.B hsh
+is a custom made command line interpreter that reads and executes basic commands from user input exactly as any standar unix-like operating systems shell program would.
+.PP
+.B hsh
+is a C program compiled with gcc 4.8.4 using the flags -Wall -Werror -Wextra and -pedantic, and is built to run on both interactive and non-interactive mode.
+.PP
+.SH USAGE
+This simple shell accepts user commands from standard input. The command is passed to the shell when the user hits the enter key.  This simple shell is capable of performing the following actions:
+
+Tokennizes command lind string into null terminated array.
+
+Searches for exact path of command if the exact path is not given by user.
+
+Executes the command passed by user.
+
+.PP 
+.SH BUILTINS
+.IP env
+Prints out environmental variables.
+.IP exit
+Exits ./hsh and frees any memory that was allocated during program use.
+.IP ^C + c
+Shell will not quit when user types ^C + c.
+.IP cd
+Changes the current directory of the process.
+.PP
+.SH BUGS
+There are no known bugs in this simple shell program.
+.SH AUTHORS
+Kyle Gross <2735@holbertonschool.com> 
+
+Chris Vanndy <2736@holbertonschool.com>

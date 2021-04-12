@@ -24,7 +24,7 @@ Searches for exact path of command if the exact path is not given by user.
 
 Executes the command passed by user.
 
-.PP 
+.PP
 .SH BUILTINS
 .IP env
 Prints out environmental variables.
@@ -38,6 +38,8 @@ Changes the current directory of the process.
 .SH BUGS
 There are no known bugs in this simple shell program.
 .SH AUTHORS
-Kyle Gross <2735@holbertonschool.com> 
+Kyle Gross <2735@holbertonschool.com>
+
++
 
 Chris Vanndy <2736@holbertonschool.com>

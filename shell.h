@@ -38,6 +38,7 @@ int _strcmp(char *s1, char *s2);
 int _strncmp(char *s1, char *s2, int n);
 int _strlen(char *s);
 char *_strcat(char *dest, char *src);
+char *estrcat(char *dest, char *src, int i);
 char *_bstrcat(char *dest, char *src);
 char *funkycat(char *dest, char *middle, char *src);
 
@@ -49,5 +50,6 @@ void execError(char *av, char *input, int count);
 void errorhandler(char *av, char *input, int count);
 int compareStr(char **av, char *cmd, char **toks, int count);
 char *int_to_str(int n, char *str);
+char *check_cwd(char *pathstr);
 
 #endif

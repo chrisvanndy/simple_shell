@@ -24,7 +24,7 @@ void errorhandler(char *av, char *input, int count)
 	_strcpy(newstr, av);
 	_strcat(newstr, ": ");
 	_strcat(newstr, countstr);
-	_strcat(newst, ": ");
+	_strcat(newstr, ": ");
 	_strcat(newstr, input);
 	perror(newstr);
 	free(newstr);

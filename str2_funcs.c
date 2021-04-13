@@ -14,6 +14,7 @@ char *_bstrcat(char *dest, char *src)
 		temp = _strdup(dest);
 		if (!temp)
 			return (NULL);
+		_memset(dest, '\0', _strlen(dest));
 		if (src)
 		{
 			_strcpy(dest, src);
@@ -23,6 +24,27 @@ char *_bstrcat(char *dest, char *src)
 			_strcat(dest, temp);
 		}
 		free(temp);
+	}
+	return (dest);
+}
+/**
+ * estrcat - concatenate starting in middle of string
+ * @dest: destination string
+ * @src: source string
+ * @i: index of string
+ * Return: altered string
+ */
+char *estrcat(char *dest, char *src, int i)
+{
+	int ii = 0;
+
+	if (dest && src)
+	{
+		for (; src[ii]; i++, ii++)
+		{
+			dest[i] = src[ii];
+		}
+		dest[i] = '\0';
 	}
 	return (dest);
 }

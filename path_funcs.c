@@ -16,12 +16,13 @@ char *find_path(char **toks)
 	for (i = 0; environ[i]; i++)
 		if (_strncmp(environ[i], "PATH=", 5) == 0)
 			break;
-	/* Create 2d array for paths */
-	newstr = _strdup(environ[i]);
+	newstr = _strdup(environ[i] + 5);
 	if (!newstr)
 		return (toks[0]);
-/*	len = countword(newstr + 5, ':');
-*/	path = tokenArray(newstr + 5, ":", 1);
+	/* See if current directory is specified in path */
+	newstr = check_cwd(newstr);
+	/* Create 2d array for paths */
+	path = tokenArray(newstr, ":", 1);
 	free(newstr);
 	newstr = NULL;
 	/* Check if full path has been specified by user */
@@ -105,4 +106,43 @@ char *check_path(char *str)
 		return (NULL);
 	_strncpy(newstr, str, count3);
 	return (newstr);
+}
+/**
+ * check_cwd - checks if current directory is in the PATH
+ * @pathstr: string which holds the full PATH
+ * Return: Altered string if current directory found, or original string if not
+ */
+char *check_cwd(char *pathstr)
+{
+	int i = 0;
+	int len = _strlen(pathstr);
+	char *temp = NULL;
+
+	for (i = 0; pathstr[i]; i++)
+	{
+		if (pathstr[0] == ':')
+		{
+			pathstr = _realloc(pathstr, len + 1, len + 2);
+			_bstrcat(pathstr, ".");
+			break;
+		}
+		else if (pathstr[len - 1] == ':')
+		{
+			pathstr = _realloc(pathstr, len + 1, len + 2);
+			_strcat(pathstr, ".");
+			len = _strlen(pathstr);
+			pathstr[len - 1] = '\0';
+			break;
+		}
+		else if (pathstr[i] == ':' && pathstr[i + 1] == ':')
+		{
+			pathstr = _realloc(pathstr, len + 1, len + 2);
+			temp = _strdup(pathstr + (i + 1));
+			pathstr[i + 1] = '.';
+			estrcat(pathstr, temp, i + 2);
+			free(temp);
+			break;
+		}
+	}
+	return (pathstr);
 }

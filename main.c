@@ -21,7 +21,11 @@ int main(int ac, char **av)
 			print_prompt1();
 		cmd = read_cmd();
 		if (!cmd)
-			exit(-1);
+		{
+			if (mode)
+				write(STDOUT_FILENO, "\n", 1);
+			exit(0);
+		}
 		cmdtoks = tokenArray(cmd, " ", 0);
 		if (cmdtoks == NULL)
 		{
@@ -44,10 +48,11 @@ int main(int ac, char **av)
 			continue;
 		}
 */		executecmd(av, cmdtoks, path, cmd, count);
-		if (!mode)
+/*		if (!mode)
 			break;
-		free_toks(cmdtoks);
+*/		free_toks(cmdtoks);
 		free(cmd);
+		cmd = NULL;
 	}
 	free_toks(cmdtoks);
 	free(cmd);
@@ -60,15 +65,15 @@ int main(int ac, char **av)
 char *read_cmd(void)
 {
 	char *buf = NULL, *ptr = NULL, *ptr2;
-	ssize_t ptrlen = 0, getlineval = 0, buflen = 0;
+	ssize_t ptrlen = 0/*, getlineval = 0*/, buflen = 0;
 	size_t bufsize = 1024;
 
-	while (getlineval != -1)
+	while (getline(&buf, &bufsize, stdin) != -1)
 	{
-		getlineval = getline(&buf, &bufsize, stdin);
+/*		getlineval = getline(&buf, &bufsize, stdin);
 		if (getlineval == -1)
 			free(buf), write(1, "\n", 1), exit(-1);
-		buflen = _strlen(buf);
+*/		buflen = _strlen(buf);
 		if (!ptr)
 			ptr = malloc(buflen + 1);
 		else

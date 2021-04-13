@@ -1,4 +1,5 @@
 #include "shell.h"
+#define INT_DECIMAL_STRING_SIZE(int_type)
 /**
  * errorhandler - handles error message text
  * @av: argv
@@ -13,7 +14,7 @@ void errorhandler(char *av, char *input, int count)
 	int len2 = _strlen(input);
 	int len3 = 0;
 
-	countstr = int_to_str(count, countstr);
+	countstr = int_to_str(count);
 	if (!countstr)
 		return;
 	len3 = _strlen(countstr);
@@ -44,7 +45,7 @@ void execError(char *av, char *input, int count)
 	int len2 = _strlen(input);
 	int len3 = 0;
 
-	countstr = int_to_str(count, countstr);
+	countstr = int_to_str(count);
 	if (!countstr)
 		return;
 	len3 = _strlen(countstr);
@@ -65,50 +66,41 @@ void execError(char *av, char *input, int count)
 }
 /**
  * int_to_str - converts int to string
- * @n: input int
- * @str: new string
+ * @count: the int to convert, represents line number
  * Return: converted string
  */
-char *int_to_str(int n, char *str)
+char *int_to_str(int count)
 {
-	unsigned int x, i = 0, y = 1000000000;
-	unsigned int nn = n;
-	int len = 0;
+	char *temp;
+	unsigned int neg;
+	int i, rem, num, n, len, x;
 
-	if (!str)
+	n = count;
+	num = n;
+	len = i = 0;
+	/* Find integer length */
+	while (n != 0)
 	{
-		str = malloc(sizeof(char) * 2);
-		if (!str)
-			return (NULL);
-		_memset(str, '\0', 2);
+		len++;
+		n /= 10;
 	}
-	if (nn == 0)
+	x = len;
+	if (num == 0)
 	{
-		str[0] = '0';
-		str[1] = '\0';
-		return (str);
+		temp = malloc(2);
+		temp[0] = '0';
+		temp[1] = '\0';
+		return (temp);
 	}
-	while (nn >= 1)
+	/* Skip negative numbers */
+	else
+		temp = malloc(len + 2), neg = num;
+	for (; i < len; i++)
 	{
-		if (nn >= y)
-		{
-			x = nn / y;
-			len = _strlen(str);
-			str = _realloc(str, len, len + 2);
-			str[i] = '0' + x;
-			i++;
-			nn = nn - (x * y);
-			y = y / 10;
-			while (nn < y)
-			{
-				str[i] = '0' + 0;
-				i++;
-				y = y / 10;
-			}
-		}
-		else
-			y = y / 10;
+		rem = neg % 10;
+		neg /= 10;
+		temp[x - (i + 1)] = (rem + '0');
 	}
-	str[i] = '\0';
-	return (str);
+	temp[x] = '\0';
+	return (temp);
 }

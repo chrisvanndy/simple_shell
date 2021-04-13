@@ -6,75 +6,46 @@
  */
 char *find_path(char **toks)
 {
-	int i = 0, signal = 0;
-	size_t len = 0, len2 = _strlen(toks[0]);
+	size_t i = 0, signal = 0, len = 0, len2 = _strlen(toks[0]);
 	char *newstr = NULL;
 	char **path = NULL;
 	struct stat statvar;
 
-	/* Loop through environ to find PATH */
-	for (i = 0; environ[i]; i++)
+	for (i = 0; environ[i]; i++) /* <- Loop through environ to find PATH */
 		if (_strncmp(environ[i], "PATH=", 5) == 0)
 			break;
 	newstr = _strdup(environ[i] + 5);
 	if (!newstr)
 		return (toks[0]);
-	/* See if current directory is specified in path */
-	newstr = check_cwd(newstr);
-	/* Create 2d array for paths */
-	path = tokenArray(newstr, ":", 1);
-	free(newstr);
-	newstr = NULL;
-	/* Check if full path has been specified by user */
-	for (i = 0; path[i]; i++)
-	{
-		newstr = check_path(toks[0]);
-		if (_strcmp(path[i], newstr) == 0)
-		{
-			free(newstr);
-			free_toks(path); 
-			return (toks[0]);
-		}
-		else
-		{
-			if (newstr)
-				free(newstr);
-			newstr = NULL;
-		}
-	}
-	/* Append command string to each path */
-	for (i = 0; path[i]; i++)
+	newstr = check_cwd(newstr), path = tokenArray(newstr, ":", 1);
+	if (!path) /* ^ Is cwd specified in PATH? */ /* ^ Create 2d array for paths */
+		return (toks[0]);
+	free(newstr), newstr = NULL;
+	if (exact_path(path, toks) == 1) /* <- Does input match an exact path? */
+		return (toks[0]);
+	for (i = 0; path[i]; i++) /* <- Append command string to each path */
 	{
 		len = _strlen(path[i]);
 		path[i] = _realloc(path[i], len, len + len2 + 2);
-		path[i] = funkycat(path[i], "/", toks[0]);
+		funkycat(path[i], "/", toks[0]);
 	}
-	/* Loop through path array and use stat to check if command exists */
-	for (i = 0; path[i]; i++)
-	{
+	for (i = 0; path[i]; i++) /* <- Loop through PATH array */
+	{	/* Use stat to check if command exists */
 		if (stat(path[i], &statvar) == 0)
 		{
 			signal = 1;
 			break;
 		}
 	}
-	/* If valid command is found, return the path to the command */
-	if (signal == 1)
+	if (signal == 1) /* <- If valid command is found */
 	{
 		len = _strlen(path[i]);
 		toks[0] = _realloc(toks[0], len2, len + 1);
-		_strcpy(toks[0], path[i]);
-		free_toks(path);
-		return (toks[0]);
+		_strcpy(toks[0], path[i]), free_toks(path);
+		return (toks[0]); /* <- Return the path to the command */
 	}
-	/* Otherwise, return user input */
-	else
-	{
-		free(newstr);
-		free_toks(path);
-		return (toks[0]);
-	}
-	return (toks[0]);
+	free(newstr), free_toks(path);
+	return (toks[0]); /* <- Otherwise, return user input */
 }
 /**
  * check_path - checks if user has given a full path
@@ -118,23 +89,21 @@ char *check_cwd(char *pathstr)
 	int len = _strlen(pathstr);
 	char *temp = NULL;
 
+	if (pathstr[0] == ':')
+	{
+		pathstr = _realloc(pathstr, len + 1, len + 2);
+		_bstrcat(pathstr, ".");
+		return (pathstr);
+	}
+	if (pathstr[len - 1] == ':')
+	{
+		pathstr = _realloc(pathstr, len + 1, len + 2);
+		_strcat(pathstr, ".");
+		return (pathstr);
+	}
 	for (i = 0; pathstr[i]; i++)
 	{
-		if (pathstr[0] == ':')
-		{
-			pathstr = _realloc(pathstr, len + 1, len + 2);
-			_bstrcat(pathstr, ".");
-			break;
-		}
-		else if (pathstr[len - 1] == ':')
-		{
-			pathstr = _realloc(pathstr, len + 1, len + 2);
-			_strcat(pathstr, ".");
-			len = _strlen(pathstr);
-			pathstr[len - 1] = '\0';
-			break;
-		}
-		else if (pathstr[i] == ':' && pathstr[i + 1] == ':')
+		if (pathstr[i] == ':' && pathstr[i + 1] == ':')
 		{
 			pathstr = _realloc(pathstr, len + 1, len + 2);
 			temp = _strdup(pathstr + (i + 1));
@@ -145,4 +114,33 @@ char *check_cwd(char *pathstr)
 		}
 	}
 	return (pathstr);
+}
+/**
+ * exact_path - checks if user has given an exact path
+ * @path: 2d array holding path strings
+ * @toks: 2d array holding input strings
+ * Return: 1 if match, 0 if no match
+ */
+int exact_path(char **path, char **toks)
+{
+	int i = 0;
+	char *newstr = NULL;
+
+	for (i = 0; path[i]; i++)
+	{
+		newstr = check_path(toks[0]);
+		if (_strcmp(path[i], newstr) == 0)
+		{
+			free(newstr);
+			free_toks(path);
+			return (1);
+		}
+		else
+		{
+			if (newstr)
+				free(newstr);
+			newstr = NULL;
+		}
+	}
+	return (0);
 }

@@ -11,6 +11,7 @@
 void executecmd(char **av, char **toks, char *path, char *cmd, int count)
 {
 	pid_t child;
+	int status;
 	char *temp = NULL;
 
 	temp = _strdup(path);
@@ -31,5 +32,5 @@ void executecmd(char **av, char **toks, char *path, char *cmd, int count)
 		}
 	}
 	else
-		wait(NULL);
+		wait(&status);
 }

@@ -32,31 +32,21 @@ int main(int ac, char **av)
 			free(cmd);
 			continue;
 		}
-		/* Make comparison here */
 		comp = compareStr(av, cmd, cmdtoks, count);
 		if (comp == 0)
 			continue;
 		if (comp == -1)
 			break;
-		/* find path */
 		path = find_path(cmdtoks);
-/*		if (!path)
+		if (!path)
 		{
-			free(cmd);
-			free_toks(cmdtoks);
-			errorhandler(av[0]);
+			free(cmd), free_toks(cmdtoks), errorhandler(av[0], cmdtoks[0], count);
 			continue;
 		}
-*/		executecmd(av, cmdtoks, path, cmd, count);
-/*		if (!mode)
-			break;
-*/		free_toks(cmdtoks);
-		free(cmd);
-		cmd = NULL;
+		executecmd(av, cmdtoks, path, cmd, count);
+		free_toks(cmdtoks), free(cmd), cmd = NULL, cmdtoks = NULL;
 	}
-	free_toks(cmdtoks);
-	free(cmd);
-	exit(EXIT_SUCCESS);
+	free_toks(cmdtoks), free(cmd), exit(EXIT_SUCCESS);
 }
 /**
  * read_cmd - reads commands
@@ -65,15 +55,12 @@ int main(int ac, char **av)
 char *read_cmd(void)
 {
 	char *buf = NULL, *ptr = NULL, *ptr2;
-	ssize_t ptrlen = 0/*, getlineval = 0*/, buflen = 0;
+	ssize_t ptrlen = 0, buflen = 0;
 	size_t bufsize = 1024;
 
 	while (getline(&buf, &bufsize, stdin) != -1)
 	{
-/*		getlineval = getline(&buf, &bufsize, stdin);
-		if (getlineval == -1)
-			free(buf), write(1, "\n", 1), exit(-1);
-*/		buflen = _strlen(buf);
+		buflen = _strlen(buf);
 		if (!ptr)
 			ptr = malloc(buflen + 1);
 		else
@@ -82,15 +69,11 @@ char *read_cmd(void)
 			if (ptr2)
 				ptr = ptr2;
 			else
-			{
-				free(ptr);
-				ptr = NULL;
-			}
+				free(ptr), ptr = NULL;
 		}
 		if (!ptr)
 		{
-			perror("error: failed to alloc buffer: ");
-			free(buf);
+			perror("error: failed to alloc buffer: "), free(buf);
 			return (NULL);
 		}
 		_strcpy(ptr + ptrlen, buf);
@@ -115,6 +98,7 @@ char *read_cmd(void)
  * @av: argv
  * @cmd: input string
  * @toks: 2d array of tokens
+ * @count: keeps count for error msgs
  * Return: 0 if continue, -1 if break, 1 if no match
  */
 int compareStr(char **av, char *cmd, char **toks, int count)

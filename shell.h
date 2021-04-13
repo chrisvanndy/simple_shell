@@ -49,7 +49,9 @@ char *_memset(char *s, char b, unsigned int n);
 void execError(char *av, char *input, int count);
 void errorhandler(char *av, char *input, int count);
 int compareStr(char **av, char *cmd, char **toks, int count);
-char *int_to_str(int n, char *str);
+char *int_to_str(int count);
 char *check_cwd(char *pathstr);
+char *_memcpy(char *dest, char *src, unsigned int n);
+int exact_path(char **path, char **toks);
 
 #endif

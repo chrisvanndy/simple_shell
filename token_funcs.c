@@ -59,7 +59,6 @@ char **tokenArray(char *cmd, char *delim, int signal)
 /**
  * free_toks - free vertical index of toks
  * @toks: array passed from tokenArray
- *
  * Return: void
  */
 void free_toks(char **toks)

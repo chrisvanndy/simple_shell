@@ -83,3 +83,18 @@ char *_realloc(char *ptr, unsigned int old_size, unsigned int new_size)
 	free(ptr);
 	return (nptr);
 }
+/**
+ * _memcpy - copies n bytes from *src to *dest
+ * @dest: destination
+ * @src: source
+ * @n: number of times to copy
+ * Return: destination string
+ */
+char *_memcpy(char *dest, char *src, unsigned int n)
+{
+	unsigned int i = 0;
+
+	for (i = 0; i < n; i++)
+		dest[i] = src[i];
+	return (dest);
+}

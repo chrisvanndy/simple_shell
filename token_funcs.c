@@ -20,11 +20,9 @@ size_t countword(char *str, char delim)
  * tokenArray - creates an array of tokens
  * @cmd: string passed from main to tokenize
  * @delim: delimiter character
- * @signal: used to identify when function is being called - determines
- * when to append a null byte
  * Return: NULL if failed or 2darray if success
  */
-char **tokenArray(char *cmd, char *delim, int signal)
+char **tokenArray(char *cmd, char *delim)
 {
 	char *token = NULL;
 	char **toks;
@@ -35,7 +33,7 @@ char **tokenArray(char *cmd, char *delim, int signal)
 	if (!cmd)
 		return (NULL);
 	len = _strlen(cmd);
-	if (signal == 0)
+	if (cmd[len - 1] == '\n')
 		cmd[len - 1] = '\0';
 	wordcount = countword(cmd, delim[0]);
 	toks = malloc(sizeof(char *) * (wordcount + 1));

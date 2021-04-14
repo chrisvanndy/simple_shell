@@ -26,7 +26,7 @@ int main(int ac, char **av)
 				write(STDOUT_FILENO, "\n", 1);
 			exit(0);
 		}
-		cmdtoks = tokenArray(cmd, " ", 0);
+		cmdtoks = tokenArray(cmd, " ");
 		if (cmdtoks == NULL)
 		{
 			free(cmd);

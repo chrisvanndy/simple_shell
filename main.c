@@ -116,7 +116,7 @@ int compareStr(char **av, char *cmd, char **toks, int count)
 		free_toks(toks);
 		return (0);
 	}
-	if (_strcmp(toks[0], "exit\0") == 0)
+	if (_strcmp(toks[0], "exit") == 0)
 	{
 		free(cmd);
 		free_toks(toks);

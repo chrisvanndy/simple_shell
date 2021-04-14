@@ -6,14 +6,17 @@
  */
 char *find_path(char **toks)
 {
-	size_t i = 0, signal = 0, len = 0, len2 = _strlen(toks[0]);
+	size_t i = 0, signal = 0, len = 0, len2 = _strlen(toks[0]), indicator = 0;
 	char *newstr = NULL;
 	char **path = NULL;
 	struct stat statvar;
 
 	for (i = 0; environ[i]; i++) /* <- Loop through environ to find PATH */
 		if (_strncmp(environ[i], "PATH=", 5) == 0)
-			break;
+		{indicator = 1;
+			break; }
+	if (indicator == 0)
+		return (toks[0]);
 	newstr = _strdup(environ[i] + 5);
 	if (!newstr)
 		return (toks[0]);
@@ -24,11 +27,8 @@ char *find_path(char **toks)
 	if (exact_path(path, toks) == 1) /* <- Does input match an exact path? */
 		return (toks[0]);
 	for (i = 0; path[i]; i++) /* <- Append command string to each path */
-	{
-		len = _strlen(path[i]);
-		path[i] = _realloc(path[i], len, len + len2 + 2);
-		funkycat(path[i], "/", toks[0]);
-	}
+	{len = _strlen(path[i]), path[i] = _realloc(path[i], len, len + len2 + 2);
+		funkycat(path[i], "/", toks[0]); }
 	for (i = 0; path[i]; i++) /* <- Loop through PATH array */
 	{	/* Use stat to check if command exists */
 		if (stat(path[i], &statvar) == 0)
@@ -39,8 +39,7 @@ char *find_path(char **toks)
 	}
 	if (signal == 1) /* <- If valid command is found */
 	{
-		len = _strlen(path[i]);
-		toks[0] = _realloc(toks[0], len2, len + 1);
+		len = _strlen(path[i]), toks[0] = _realloc(toks[0], len2, len + 1);
 		_strcpy(toks[0], path[i]), free_toks(path);
 		return (toks[0]); /* <- Return the path to the command */
 	}

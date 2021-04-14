@@ -24,7 +24,7 @@ char *read_cmd(void);
 int executecmd(char **av, char **toks, char *path, char *cmd, int count);
 
 /* TOKEN FUNCS */
-char **tokenArray(char *cmd, char *delim, int signal);
+char **tokenArray(char *cmd, char *delim);
 void free_toks(char **toks);
 size_t countword(char *str, char delim);
 char *check_path(char *str);

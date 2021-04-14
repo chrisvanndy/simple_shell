@@ -20,7 +20,7 @@ char *find_path(char **toks)
 	newstr = _strdup(environ[i] + 5);
 	if (!newstr)
 		return (toks[0]);
-	newstr = check_cwd(newstr), path = tokenArray(newstr, ":", 1);
+	newstr = check_cwd(newstr), path = tokenArray(newstr, ":");
 	if (!path) /* ^ Is cwd specified in PATH? */ /* ^ Create 2d array for paths */
 		return (toks[0]);
 	free(newstr), newstr = NULL;

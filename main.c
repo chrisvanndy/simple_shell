@@ -8,7 +8,7 @@
 int main(int ac, char **av)
 {
 	char *cmd = NULL, *path = NULL;
-	int mode, comp = 0, count = 0;
+	int mode, comp = 0, count = 0, n = 0;
 	char **cmdtoks;
 
 	(void)ac;
@@ -43,10 +43,10 @@ int main(int ac, char **av)
 			free(cmd), free_toks(cmdtoks), errorhandler(av[0], cmdtoks[0], count);
 			continue;
 		}
-		executecmd(av, cmdtoks, path, cmd, count);
+		n = executecmd(av, cmdtoks, path, cmd, count);
 		free_toks(cmdtoks), free(cmd), cmd = NULL, cmdtoks = NULL;
 	}
-	free_toks(cmdtoks), free(cmd), exit(EXIT_SUCCESS);
+	free_toks(cmdtoks), free(cmd), exit(n);
 }
 /**
  * read_cmd - reads commands
@@ -117,10 +117,7 @@ int compareStr(char **av, char *cmd, char **toks, int count)
 		return (0);
 	}
 	if (_strcmp(toks[0], "exit") == 0)
-	{
-		free(cmd);
-		free_toks(toks);
-		exit(0);
-	}
+		return (-1);
+
 	return (1);
 }

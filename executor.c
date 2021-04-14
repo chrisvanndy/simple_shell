@@ -8,10 +8,10 @@
  * @count: keeps track of line #
  * Return: void
  */
-void executecmd(char **av, char **toks, char *path, char *cmd, int count)
+int executecmd(char **av, char **toks, char *path, char *cmd, int count)
 {
 	pid_t child;
-	int status;
+	int status, exit_status = 0;
 	char *temp = NULL;
 
 	temp = _strdup(path);
@@ -28,9 +28,13 @@ void executecmd(char **av, char **toks, char *path, char *cmd, int count)
 			execError(av[0], toks[0], count);
 			free(cmd);
 			free_toks(toks);
-			exit(0);
+			exit(127);
 		}
 	}
 	else
-		wait(&status);
+		waitpid(child, &status, 0);
+	if (WIFEXITED(status))
+		exit_status = WEXITSTATUS(status);
+
+	return (exit_status);
 }

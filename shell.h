@@ -21,7 +21,7 @@ extern char **environ;
 void print_prompt1(void);
 void print_prompt2(void);
 char *read_cmd(void);
-void executecmd(char **av, char **toks, char *path, char *cmd, int count);
+int executecmd(char **av, char **toks, char *path, char *cmd, int count);
 
 /* TOKEN FUNCS */
 char **tokenArray(char *cmd, char *delim, int signal);

@@ -105,7 +105,7 @@ char *_memcpy(char *dest, char *src, unsigned int n)
 void print_env(void)
 {
 	int i, len = 0;
-	
+
 	for (i = 0; environ[i]; i++)
 	{
 		len = _strlen(environ[i]);

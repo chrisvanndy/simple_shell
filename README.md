@@ -29,7 +29,7 @@ This program was made for the  Holberton School Simple Shell projhect. The Simpl
 ## Examples
 * Interactive mode
   * `coolbean$ ls -l -a`
-* Non-interactive mode 
+* Non-interactive mode
   * `echo ls -l -a | ./hsh`
 
 ## Authors

@@ -131,7 +131,7 @@ int compareStr(char **av, char *cmd, char **toks, int count)
 	return (1);
 }
 /**
- * sig_handler - handles C^ signal 
+ * sig_handler - handles C^ signal
  * @num: unused - required for arg to SIGNAL
  * Return: void
  */

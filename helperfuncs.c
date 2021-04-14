@@ -109,9 +109,7 @@ void print_env(void)
 	for (i = 0; environ[i]; i++)
 	{
 		len = _strlen(environ[i]);
-		environ[i][len - 1] = '\n';
-		environ[i][len] = '\0';
-		len = _strlen(environ[i]);
-		write(STDOUT_FILENO, environ[i], len);
+		write(STDOUT_FILENO, environ[i], len + 1);
+		write(STDOUT_FILENO, "\n", 1);
 	}
 }

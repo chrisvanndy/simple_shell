@@ -15,7 +15,6 @@ This program was made for the  Holberton School Simple Shell projhect. The Simpl
 * To run the shell in interactive mode, run the executable file
   * `./hsh`
 * To run the shell in non-interactive mode, pipe commands to the executable
-  * example: `echo ls -l | ./hsh`
 
 ## Usage
 * In interactive mode, commands should be entered in the following format:
@@ -26,6 +25,12 @@ This program was made for the  Holberton School Simple Shell projhect. The Simpl
   * `env`
   * `cd`
 * The Simple Shell can also execute any command found in $PATH
+
+## Examples
+* Interactive mode
+  * `coolbean$ ls -l -a`
+* Non-interactive mode 
+  * `echo ls -l -a | ./hsh`
 
 ## Authors
 This Simple Shell was written by Kyle Gross and Chris Vanndy, C14 Holberton School Tulsa, OK.

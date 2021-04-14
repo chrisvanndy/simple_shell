@@ -22,7 +22,6 @@ int executecmd(char **av, char **toks, char *path, char *cmd, int count)
 		errorhandler(av[0], toks[0], count);
 	if (child == 0)
 	{
-		signal(SIGINT, SIG_DFL);
 		if (execve(toks[0], toks, environ) == -1)
 		{
 			execError(av[0], toks[0], count);

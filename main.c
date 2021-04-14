@@ -3,7 +3,7 @@
  * main - accepts and executes commands
  * @ac: # of command line args
  * @av: list of command line args stored as strings
- * Return: 0 if success
+ * Return: 0 if success:
  */
 int main(int ac, char **av)
 {
@@ -12,7 +12,7 @@ int main(int ac, char **av)
 	char **cmdtoks;
 
 	(void)ac;
-	signal(SIGINT, SIG_IGN);
+	signal(SIGINT, sighandler);
 	mode = isatty(STDIN_FILENO);
 	while (1)
 	{
@@ -107,6 +107,7 @@ int compareStr(char **av, char *cmd, char **toks, int count)
 	{
 		free(cmd);
 		free_toks(toks);
+		cmd = NULL, toks = NULL;
 		return (0);
 	}
 	if (_strcmp(toks[0], "cd\0") == 0)
@@ -114,10 +115,30 @@ int compareStr(char **av, char *cmd, char **toks, int count)
 		dirchg(toks, av, count);
 		free(cmd);
 		free_toks(toks);
+		cmd = NULL, toks = NULL;
 		return (0);
 	}
 	if (_strcmp(toks[0], "exit") == 0)
 		return (-1);
-
+	if (_strcmp(toks[0], "env") == 0)
+	{
+		print_env();
+		free(cmd);
+		free_toks(toks);
+		cmd = NULL, toks = NULL;
+		return (0);
+	}
 	return (1);
+}
+/**
+ * sig_handler - handles C^ signal 
+ * @num: unused - required for arg to SIGNAL
+ * Return: void
+ */
+void sighandler(int num)
+{
+	(void)num;
+
+	write(STDOUT_FILENO, "\n", 1);
+	print_prompt1();
 }

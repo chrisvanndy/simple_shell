@@ -53,5 +53,7 @@ char *int_to_str(int count);
 char *check_cwd(char *pathstr);
 char *_memcpy(char *dest, char *src, unsigned int n);
 int exact_path(char **path, char **toks);
+void print_env(void);
+void sighandler(int num);
 
 #endif
